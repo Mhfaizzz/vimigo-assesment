@@ -36,13 +36,16 @@ class ApiController extends Controller
         return response(['message'=> 'Invalid login credentials']);
     }
 
+    //only user with personal token can access it
     //Retrieve all user profiles
     public function profile (){
-        //return $user=Auth::guard('api')->user();
+        
        return User::all();
     }
 
     public function create(Request $req){
+
+        //input validation
         $req -> validate([ 
             'name' => 'required|string',
             'email' => 'required|string',   
@@ -51,10 +54,11 @@ class ApiController extends Controller
 
         $data = $req->all();
     
+        //create user
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['password']), //encrypt the password using Hash
             'created_at' => NOW(),
             'updated_at' => NOW()
         ]);
@@ -67,9 +71,9 @@ class ApiController extends Controller
     //Update users by id
     public function update (Request $req, $id){
 
-        $user = User::find($id);
+        $user = User::find($id); 
 
-        //form request validation
+        //input validation
         $req -> validate([ 
             'name' => 'required|string',
             'email' => 'required|string',   
@@ -82,7 +86,7 @@ class ApiController extends Controller
         $user ->update([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => Hash::make($data['password']),
             'updated_at' => NOW(), //current timestamp
         ]);
 
@@ -92,7 +96,7 @@ class ApiController extends Controller
     }
 
 
-    //Delete users by id
+    //Delete user by id
     public function destroy($id)
     {
         $user = User::find($id)->delete();

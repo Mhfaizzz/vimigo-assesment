@@ -14,8 +14,10 @@ class UsersUpdateImport implements ToCollection, WithHeadingRow
     
     public function collection(Collection $rows)
     {
+        //loop for each row in excel
         foreach ($rows as $row) 
         {
+            //update the records according to the id
             $update = User::find($row['id']);
             $update ->update([
                 'name' => $row['name'],

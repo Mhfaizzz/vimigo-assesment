@@ -14,6 +14,7 @@ class UsersDeleteImport implements ToCollection, WithHeadingRow
     
     public function collection(Collection $rows)
     {
+        //loop for each row in excel
         foreach ($rows as $row) 
         {
             $delete = User::find($row['id'])->delete();

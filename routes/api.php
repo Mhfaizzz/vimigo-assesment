@@ -22,14 +22,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/login', [ApiController::class, 'loginUser']);
 
 Route::group(['middleware' => 'auth:api'], function(){
-    Route::post('/user', [ApiController::class, 'create']);
-    Route::get('/user', [ApiController::class, 'profile']);
-    Route::put('/users/{id}', [ApiController::class, 'update']);
-    Route::delete('/users/{id}', [ApiController::class, 'destroy']);
+    Route::post('/user', [ApiController::class, 'create']); //POST (CREATE)
+    Route::get('/user', [ApiController::class, 'profile']); //GET (RETRIEVE)
+   // Route::put('/user/{id}', [ApiController::class, 'update']); //PUT (UPDATE)
+    //Route::PUT('/user/{id}', 'ApiController@update'); 
+    Route::put('/user/{id}', [ApiController::class, 'update']);
+    Route::delete('/user/{id}', [ApiController::class, 'destroy']); //DELETE (DELETE)
     
     
-    Route::get('/users', [ApiController::class, 'filter']);
+    Route::get('/users', [ApiController::class, 'filter']); //Filter by name/email, pagination
     
+    //route for import csv file
     Route::post('/bulkcreate', [ApiController::class, 'createUsers']);
     Route::post('/bulkupdate', [ApiController::class, 'updateUsers']);
     Route::post('/bulkdelete', [ApiController::class, 'deleteUsers']);
