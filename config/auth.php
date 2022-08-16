@@ -44,7 +44,7 @@ return [
         'api' => [
             'driver' => 'passport', //authentication using passport tokenguard
             'provider' => 'users',
-            'hash' => false,
+          
         ],
     ],
 

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\loginController;
+use App\Http\Controllers\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,14 +15,25 @@ use App\Http\Controllers\loginController;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
-// User route
-Route::post('/login', [loginController::class, 'login']);
+Route::post('/login', [ApiController::class, 'loginUser']);
 
-//Route::get('user','loginController@getUser');
+Route::group(['middleware' => 'auth:api'], function(){
+    Route::post('/user', [ApiController::class, 'create']);
+    Route::get('/user', [ApiController::class, 'profile']);
+    Route::put('/users/{id}', [ApiController::class, 'update']);
+    Route::delete('/users/{id}', [ApiController::class, 'destroy']);
+    
+    
+    Route::get('/users', [ApiController::class, 'filter']);
+    
+    Route::post('/bulkcreate', [ApiController::class, 'createUsers']);
+    Route::post('/bulkupdate', [ApiController::class, 'updateUsers']);
+    Route::post('/bulkdelete', [ApiController::class, 'deleteUsers']);
+});
 
-// Route::get('/viewDetail/{id}', [JobController::class, 'viewDetailVacancy'])->name('viewDetailVacancy');
-// Route::post('/delete/{id}', [JobController::class, 'deleteVacancy'])->name('deleteVacancy');
+
+
